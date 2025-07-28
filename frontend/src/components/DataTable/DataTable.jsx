@@ -132,7 +132,7 @@ export default function DataTable({ config, extra = [] }) {
                 default:
                   break;
               }
-              // else if (key === '2')handleCloseTask
+             
             },
           }}
           trigger={['click']}

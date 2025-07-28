@@ -32,9 +32,7 @@ export default function DeleteModal({ config }) {
     if (isSuccess) {
       console.log('🚀 ~ useEffect ~ DeleteModal isSuccess:', isSuccess);
       modal.close();
-      dispatch(crud.list({ entity }));
-      // dispatch(crud.resetAction({actionType:"delete"})); // check here maybe it wrong
-    }
+      dispatch(crud.list({ entity }));    }
     if (current) {
       let labels = deleteModalLabels.map((x) => valueByString(current, x)).join(' ');
 

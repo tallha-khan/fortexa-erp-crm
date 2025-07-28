@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const logout = async (req, res, { userModel }) => {
   const UserPassword = mongoose.model(userModel + 'Password');
 
-  // const token = req.cookies[`token_${cloud._id}`];
 
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // Extract the token

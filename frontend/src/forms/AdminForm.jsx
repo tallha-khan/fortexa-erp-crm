@@ -111,16 +111,7 @@ export default function AdminForm({ isUpdateForm = false, isForAdminOwner = fals
         <Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} />
       </Form.Item>
 
-      {/* <Form.Item
-        name="file"
-        label={translate('Photo')}
-        valuePropName="fileList"
-        getValueFromEvent={(e) => e.fileList}
-      >
-        <Upload beforeUpload={beforeUpload}>
-          <Button icon={<UploadOutlined />}>{translate('click_to_upload')}</Button>
-        </Upload>
-      </Form.Item> */}
+      
     </>
   );
 }

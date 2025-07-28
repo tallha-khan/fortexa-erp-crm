@@ -38,8 +38,6 @@ export default function AutoCompleteAsync({
 
   const handleSelectChange = (newValue) => {
     isUpdating.current = false;
-    // setCurrentValue(value[outputValue] || value); // set nested value or value
-    // onChange(newValue[outputValue] || newValue);
     if (onChange) {
       if (newValue) onChange(newValue[outputValue] || newValue);
     }
@@ -54,7 +52,7 @@ export default function AutoCompleteAsync({
 
   const [, cancel] = useDebounce(
     () => {
-      //  setState("Typing stopped");
+      
       setDebouncedValue(valToSearch);
     },
     500,
@@ -87,8 +85,7 @@ export default function AutoCompleteAsync({
   const onSearch = (searchText) => {
     isSearching.current = true;
     setSearching(true);
-    // setOptions([]);
-    // setCurrentValue(undefined);
+    
     setValToSearch(searchText);
   };
 
@@ -97,8 +94,7 @@ export default function AutoCompleteAsync({
       setOptions(result);
     } else {
       setSearching(false);
-      // setCurrentValue(undefined);
-      // setOptions([]);
+      
     }
   }, [isSuccess, result]);
   useEffect(() => {
@@ -123,13 +119,12 @@ export default function AutoCompleteAsync({
       value={currentValue}
       onSearch={onSearch}
       onClear={() => {
-        // setOptions([]);
-        // setCurrentValue(undefined);
+        
         setSearching(false);
       }}
       onChange={handleSelectChange}
       style={{ minWidth: '220px' }}
-      // onSelect={handleOnSelect}
+      
     >
       {selectOptions.map((optionField) => (
         <Select.Option

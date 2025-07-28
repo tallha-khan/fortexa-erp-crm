@@ -13,7 +13,7 @@ const ContentBox = ({ children }) => {
   const { state: stateCrud, crudContextAction } = useCrudContext();
   const { state: stateApp } = useAppContext();
   const { isPanelClose } = stateCrud;
-  // const { isNavMenuClose } = stateApp;
+  
   const { panel } = crudContextAction;
 
   const [isSidePanelClose, setSidePanel] = useState(isPanelClose);
