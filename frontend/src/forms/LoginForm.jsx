@@ -51,6 +51,13 @@ export default function LoginForm() {
           {translate('Forgot password')}
         </a>
       </Form.Item>
+
+      <Form.Item>
+        <div style={{ textAlign: 'center', marginTop: '16px' }}>
+          <span>{translate("Don't have an account?")} </span>
+          <a href="/signup">{translate('Sign up')}</a>
+        </div>
+      </Form.Item>
     </div>
   );
 }
