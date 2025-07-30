@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 const verify = async (req, res, { userModel }) => {
-  const UserPasswordModel = require(`@/models/coreModels/${userModel}Password`);
-  const UserModel = require(`@/models/coreModels/${userModel}`);
+  const UserPasswordModel = mongoose.model(userModel + 'Password');
+  const UserModel = mongoose.model(userModel);
 
   const { userId, emailToken } = req.params;
 

@@ -11,7 +11,7 @@ const sendMail = async ({
   type = 'emailVerfication',
   emailToken,
 }) => {
-  const resend = new Resend(process.env.RESEND_API);
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   const { data } = await resend.emails.send({
     from: idurar_app_email,

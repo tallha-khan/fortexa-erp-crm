@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -17,12 +17,14 @@ const SignupPage = () => {
   const translate = useLanguage();
   const { isLoading, isSuccess } = useSelector(selectAuth);
   const navigate = useNavigate();
+  const [form] = Form.useForm();
 
   const dispatch = useDispatch();
   
   const onFinish = (values) => {
     // Remove confirmPassword field before sending to API
     const { confirmPassword, ...registerData } = values;
+    console.log('Submitting registration data:', registerData);
     dispatch(register({ registerData }));
   };
 
@@ -32,17 +34,20 @@ const SignupPage = () => {
         message: translate('Registration Successful'),
         description: translate('Please check your email to verify your account'),
       });
+      // Clear the form
+      form.resetFields();
       // Redirect to login page after successful registration
       setTimeout(() => {
         navigate('/login');
       }, 2000);
     }
-  }, [isSuccess, navigate, translate]);
+  }, [isSuccess, navigate, translate, form]);
 
   const FormContainer = () => {
     return (
       <Loading isLoading={isLoading}>
         <Form
+          form={form}
           layout="vertical"
           name="signup_form"
           className="signup-form"
