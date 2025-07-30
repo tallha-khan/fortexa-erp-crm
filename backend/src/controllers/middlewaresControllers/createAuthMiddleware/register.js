@@ -68,7 +68,7 @@ const register = async (req, res, { userModel }) => {
     const newUser = await UserModel.create({
       email: email.toLowerCase(),
       name,
-      enabled: false, // User will be enabled after email verification
+      enabled: true, // User will be enabled after email verification
     });
 
     // Create password record
