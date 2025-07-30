@@ -11,6 +11,7 @@ if (major < 20) {
 }
 
 // import environmental variables from our variables.env file
+
 require('dotenv').config({ path: '.env' });
 require('dotenv').config({ path: '.env.local' });
 

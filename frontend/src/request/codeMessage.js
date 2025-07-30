@@ -8,6 +8,7 @@ const codeMessage = {
   403: 'The admin is authorized, but access is forbidden. ',
   404: 'The request sent is for a record that does not exist, and the server is not operating. ',
   406: 'The requested format is not available. ',
+  409: 'A conflict occurred. The email may already be registered or validation failed. ',
   410: 'The requested resource has been permanently deleted and will no longer be available. ',
   422: 'When creating an object, a validation error occurred. ',
   500: 'An error occurred in the server, please check the server. ',
