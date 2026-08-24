@@ -3,11 +3,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Drawer, Layout, Menu } from 'antd';
 
 import { useAppContext } from '@/context/appContext';
+import BrandLockup from '@/components/BrandLockup';
 
 import useLanguage from '@/locale/useLanguage';
-import logoIcon from '@/style/images/logo-icon.svg';
-import logoText from '@/style/images/logo-text.svg';
-
 import useResponsive from '@/hooks/useResponsive';
 
 import {
@@ -16,14 +14,9 @@ import {
   ContainerOutlined,
   FileSyncOutlined,
   DashboardOutlined,
-  TagOutlined,
-  TagsOutlined,
-  UserOutlined,
   CreditCardOutlined,
   MenuOutlined,
-  FileOutlined,
   ShopOutlined,
-  FilterOutlined,
   WalletOutlined,
   ReconciliationOutlined,
 } from '@ant-design/icons';
@@ -42,7 +35,6 @@ function Sidebar({ collapsible, isMobile = false }) {
   const { state: stateApp, appContextAction } = useAppContext();
   const { isNavMenuClose } = stateApp;
   const { navMenu } = appContextAction;
-  const [showLogoApp, setLogoApp] = useState(isNavMenuClose);
   const [currentPath, setCurrentPath] = useState(location.pathname.slice(1));
 
   const translate = useLanguage();
@@ -59,25 +51,21 @@ function Sidebar({ collapsible, isMobile = false }) {
       icon: <CustomerServiceOutlined />,
       label: <Link to={'/customer'}>{translate('customers')}</Link>,
     },
-
     {
       key: 'quote',
       icon: <FileSyncOutlined />,
       label: <Link to={'/quote'}>{translate('quote')}</Link>,
     },
-
     {
       key: 'invoice',
       icon: <ContainerOutlined />,
       label: <Link to={'/invoice'}>{translate('invoices')}</Link>,
     },
-    
     {
       key: 'payment',
       icon: <CreditCardOutlined />,
       label: <Link to={'/payment'}>{translate('payments')}</Link>,
     },
-
     {
       key: 'paymentMode',
       label: <Link to={'/payment/mode'}>{translate('payments_mode')}</Link>,
@@ -109,17 +97,6 @@ function Sidebar({ collapsible, isMobile = false }) {
       }
   }, [location, currentPath]);
 
-  useEffect(() => {
-    if (isNavMenuClose) {
-      setLogoApp(isNavMenuClose);
-    }
-    const timer = setTimeout(() => {
-      if (!isNavMenuClose) {
-        setLogoApp(isNavMenuClose);
-      }
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [isNavMenuClose]);
   const onCollapse = () => {
     navMenu.collapse();
   };
@@ -131,29 +108,31 @@ function Sidebar({ collapsible, isMobile = false }) {
       onCollapse={onCollapse}
       className="navigation"
       width={256}
+      theme="dark"
       style={{
         overflow: 'auto',
-        height: '100vh',
-
-        position: isMobile ? 'absolute' : 'relative',
-        bottom: '20px',
-        ...(!isMobile && {
-          // border: 'none',
-          ['left']: '20px',
-          top: '20px',
-          // borderRadius: '8px',
-        }),
+        height: isMobile ? '100vh' : 'calc(100vh - 24px)',
+        position: isMobile ? 'absolute' : 'sticky',
+        top: isMobile ? 0 : 12,
+        left: isMobile ? 0 : 12,
+        background: '#07111f',
       }}
-      theme={'light'}
     >
-     
+      <div
+        className="logo"
+        onClick={() => navigate('/')}
+        style={{ cursor: 'pointer' }}
+      >
+        <BrandLockup inverted />
+      </div>
       <Menu
         items={items}
         mode="inline"
-        theme={'light'}
+        theme="dark"
         selectedKeys={[currentPath]}
         style={{
-          width: 256,
+          width: '100%',
+          background: 'transparent',
         }}
       />
     </Sider>
@@ -176,17 +155,17 @@ function MobileSidebar() {
         size="large"
         onClick={showDrawer}
         className="mobile-sidebar-btn"
-        style={{ ['marginLeft']: 25 }}
+        style={{ marginLeft: 16 }}
       >
         <MenuOutlined style={{ fontSize: 18 }} />
       </Button>
       <Drawer
-        width={250}
-        // style={{ backgroundColor: 'rgba(255, 255, 255, 1)' }}
-        placement={'left'}
+        width={280}
+        placement="left"
         closable={false}
         onClose={onClose}
         open={visible}
+        bodyStyle={{ padding: 0, background: '#07111f' }}
       >
         <Sidebar collapsible={false} isMobile={true} />
       </Drawer>

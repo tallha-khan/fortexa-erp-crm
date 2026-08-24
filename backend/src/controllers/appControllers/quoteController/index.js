@@ -8,6 +8,7 @@ const update = require('./update');
 const convertQuoteToInvoice = require('./convertQuoteToInvoice');
 const paginatedList = require('./paginatedList');
 const read = require('./read');
+const updateStatus = require('@/controllers/appControllers/updateDocumentStatus')('Quote');
 
 methods.list = paginatedList;
 methods.read = read;
@@ -17,5 +18,6 @@ methods.create = create;
 methods.update = update;
 methods.convert = convertQuoteToInvoice;
 methods.summary = summary;
+methods.updateStatus = updateStatus;
 
 module.exports = methods;

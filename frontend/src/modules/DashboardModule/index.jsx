@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { Tag, Row, Col } from 'antd';
+import { Row, Col } from 'antd';
+import {
+  FileTextOutlined,
+  FileSyncOutlined,
+  CheckCircleOutlined,
+  WarningOutlined,
+} from '@ant-design/icons';
 import useLanguage from '@/locale/useLanguage';
-
-import { useMoney } from '@/settings';
 
 import { request } from '@/request';
 import useFetch from '@/hooks/useFetch';
@@ -17,6 +21,7 @@ import CustomerPreviewCard from './components/CustomerPreviewCard';
 
 import { selectMoneyFormat } from '@/redux/settings/selectors';
 import { useSelector } from 'react-redux';
+import { useMoney } from '@/settings';
 
 export default function DashboardModule() {
   const translate = useLanguage();
@@ -67,7 +72,6 @@ export default function DashboardModule() {
       title: translate('Client'),
       dataIndex: ['client', 'name'],
     },
-
     {
       title: translate('Total'),
       dataIndex: 'total',
@@ -124,39 +128,63 @@ export default function DashboardModule() {
     );
   });
 
+  const today = new Date().toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+
   if (money_format_settings) {
     return (
       <>
-        <Row gutter={[32, 32]}>
+        <div className="dashboardHero">
+          <div>
+            <h1>Command center</h1>
+            <p>
+              Track invoices, quotes, payments, and customers in one place. This is the view that
+              shows how the business is moving today.
+            </p>
+          </div>
+          <div className="dashboardHeroDate">{today}</div>
+        </div>
+        <Row gutter={[20, 20]}>
           <SummaryCard
             title={translate('Invoices')}
             prefix={translate('This month')}
             isLoading={invoiceLoading}
             data={invoiceResult?.total}
+            icon={<FileTextOutlined />}
+            accent="#0e7c72"
           />
           <SummaryCard
             title={translate('Quote')}
             prefix={translate('This month')}
             isLoading={quoteLoading}
             data={quoteResult?.total}
+            icon={<FileSyncOutlined />}
+            accent="#0f4c5c"
           />
           <SummaryCard
             title={translate('paid')}
             prefix={translate('This month')}
             isLoading={paymentLoading}
             data={paymentResult?.total}
+            icon={<CheckCircleOutlined />}
+            accent="#15803d"
           />
           <SummaryCard
             title={translate('Unpaid')}
             prefix={translate('Not Paid')}
             isLoading={invoiceLoading}
             data={invoiceResult?.total_undue}
+            icon={<WarningOutlined />}
+            accent="#b45309"
           />
         </Row>
         <div className="space30"></div>
-        <Row gutter={[32, 32]}>
+        <Row gutter={[20, 20]}>
           <Col className="gutter-row w-full" sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
-            <div className="whiteBox shadow" style={{ height: 458 }}>
+            <div className="panelCard" style={{ minHeight: 458 }}>
               <Row className="pad20" gutter={[0, 0]}>
                 {statisticCards}
               </Row>
@@ -171,22 +199,17 @@ export default function DashboardModule() {
           </Col>
         </Row>
         <div className="space30"></div>
-        <Row gutter={[32, 32]}>
+        <Row gutter={[20, 20]}>
           <Col className="gutter-row w-full" sm={{ span: 24 }} lg={{ span: 12 }}>
-            <div className="whiteBox shadow pad20" style={{ height: '100%' }}>
-              <h3 style={{ color: '#22075e', marginBottom: 5, padding: '0 20px 20px' }}>
-                {translate('Recent Invoices')}
-              </h3>
-
+            <div className="panelCard pad20" style={{ height: '100%' }}>
+              <h3 className="panelTitle">{translate('Recent Invoices')}</h3>
               <RecentTable entity={'invoice'} dataTableColumns={dataTableColumns} />
             </div>
           </Col>
 
           <Col className="gutter-row w-full" sm={{ span: 24 }} lg={{ span: 12 }}>
-            <div className="whiteBox shadow pad20" style={{ height: '100%' }}>
-              <h3 style={{ color: '#22075e', marginBottom: 5, padding: '0 20px 20px' }}>
-                {translate('Recent Quotes')}
-              </h3>
+            <div className="panelCard pad20" style={{ height: '100%' }}>
+              <h3 className="panelTitle">{translate('Recent Quotes')}</h3>
               <RecentTable entity={'quote'} dataTableColumns={dataTableColumns} />
             </div>
           </Col>

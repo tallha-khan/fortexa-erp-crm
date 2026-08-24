@@ -72,6 +72,19 @@ export default function Quote() {
     {
       title: translate('Status'),
       dataIndex: 'status',
+      render: (status) => {
+        const meta = tagColor(status);
+        return <Tag color={meta.color || 'default'}>{translate(meta.label || status)}</Tag>;
+      },
+    },
+    {
+      title: translate('Converted'),
+      dataIndex: 'converted',
+      render: (converted) => (
+        <Tag color={converted ? 'green' : 'default'}>
+          {converted ? translate('Yes') : translate('No')}
+        </Tag>
+      ),
     },
   ];
 

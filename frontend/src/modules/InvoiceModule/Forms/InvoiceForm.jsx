@@ -131,6 +131,9 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
                 { value: 'draft', label: translate('Draft') },
                 { value: 'pending', label: translate('Pending') },
                 { value: 'sent', label: translate('Sent') },
+                { value: 'cancelled', label: translate('Cancelled') },
+                { value: 'on hold', label: translate('On hold') },
+                { value: 'refunded', label: translate('Refunded') },
               ]}
             ></Select>
           </Form.Item>

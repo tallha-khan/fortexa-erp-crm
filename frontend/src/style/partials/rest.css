@@ -1,21 +1,15 @@
-@font-face {
-  font-family: 'Nunito';
-  font-style: italic;
-  font-weight: 700;
-  src:
-    local('Nunito Bold'),
-    local('Nunito-Bold'),
-    url(https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDFwmdTQ3j6zbXWjgeg.woff2)
-      format('woff2');
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
 * {
-  font-family: 'Nunito', sans-serif !important;
+  font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
-  font-weight: 700;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 body {
   margin: 0;
   padding: 0;
-  background: #ffffff !important;
+  background: #f4f7fa !important;
+  color: #0f172a;
+  font-weight: 500;
 }

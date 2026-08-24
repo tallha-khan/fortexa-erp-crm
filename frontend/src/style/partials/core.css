@@ -17,12 +17,15 @@
   min-height: 100px;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
+  border-radius: 18px;
 }
 .shadow {
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e6edf5;
+  box-shadow: 0 10px 30px rgba(7, 17, 31, 0.06);
 }
 .shadow:hover {
-  border: 1px solid #bdbdbd;
+  border: 1px solid #d5e2ef;
+  box-shadow: 0 14px 36px rgba(7, 17, 31, 0.08);
 }
 .line {
   border-top: 1px solid #edf0f5;

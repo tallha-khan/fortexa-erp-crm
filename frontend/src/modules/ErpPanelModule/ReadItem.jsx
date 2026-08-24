@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Divider } from 'antd';
 
-import { Button, Row, Col, Descriptions, Statistic, Tag } from 'antd';
+import { Button, Row, Col, Descriptions, Statistic, Tag, Select } from 'antd';
 import { PageHeader } from '@ant-design/pro-layout';
 import {
   EditOutlined,
@@ -9,13 +9,12 @@ import {
   CloseCircleOutlined,
   RetweetOutlined,
   MailOutlined,
+  CreditCardOutlined,
 } from '@ant-design/icons';
 
 import { useSelector, useDispatch } from 'react-redux';
 import useLanguage from '@/locale/useLanguage';
 import { erp } from '@/redux/erp/actions';
-
-import { generate as uniqueId } from 'shortid';
 
 import { selectCurrentItem } from '@/redux/erp/selectors';
 
@@ -23,6 +22,8 @@ import { DOWNLOAD_BASE_URL } from '@/config/serverApiConfig';
 import { useMoney, useDate } from '@/settings';
 import useMail from '@/hooks/useMail';
 import { useNavigate } from 'react-router-dom';
+import { request } from '@/request';
+import { tagColor } from '@/utils/statusTagColor';
 
 const Item = ({ item, currentErp }) => {
   const { moneyFormatter } = useMoney();
@@ -123,6 +124,34 @@ export default function ReadItem({ config, selectedItem }) {
     }
   }, [currentErp]);
 
+  const isQuote = entity === 'quote';
+  const isInvoice = entity === 'invoice';
+  const statusOptions = isQuote
+    ? ['draft', 'pending', 'sent', 'accepted', 'declined', 'cancelled']
+    : ['draft', 'pending', 'sent', 'cancelled', 'on hold', 'refunded'];
+
+  const handleStatusChange = async (status) => {
+    const data = await request.updateStatus({
+      entity,
+      id: currentErp._id,
+      jsonData: { status },
+    });
+    if (data?.success && data.result) {
+      setCurrentErp(data.result);
+      dispatch(erp.currentItem({ data: data.result }));
+    }
+  };
+
+  const statusTag = (value) => {
+    if (!value) return null;
+    const meta = tagColor(value);
+    return (
+      <Tag color={meta.color || 'default'} key={value}>
+        {translate(meta.label || value)}
+      </Tag>
+    );
+  };
+
   return (
     <>
       <PageHeader
@@ -132,16 +161,17 @@ export default function ReadItem({ config, selectedItem }) {
         title={`${ENTITY_NAME} # ${currentErp.number}/${currentErp.year || ''}`}
         ghost={false}
         tags={[
-          <span key="status">{currentErp.status && translate(currentErp.status)}</span>,
-          currentErp.paymentStatus && (
-            <span key="paymentStatus">
-              {currentErp.paymentStatus && translate(currentErp.paymentStatus)}
-            </span>
+          statusTag(currentErp.status),
+          isInvoice && statusTag(currentErp.paymentStatus),
+          isQuote && currentErp.converted && (
+            <Tag color="green" key="converted">
+              {translate('Converted')}
+            </Tag>
           ),
         ]}
         extra={[
           <Button
-            key={`${uniqueId()}`}
+            key="close"
             onClick={() => {
               navigate(`/${entity.toLowerCase()}`);
             }}
@@ -150,7 +180,7 @@ export default function ReadItem({ config, selectedItem }) {
             {translate('Close')}
           </Button>,
           <Button
-            key={`${uniqueId()}`}
+            key="pdf"
             onClick={() => {
               window.open(
                 `${DOWNLOAD_BASE_URL}${entity}/${entity}-${currentErp._id}.pdf`,
@@ -162,7 +192,7 @@ export default function ReadItem({ config, selectedItem }) {
             {translate('Download PDF')}
           </Button>,
           <Button
-            key={`${uniqueId()}`}
+            key="mail"
             loading={mailInProgress}
             onClick={() => {
               send(currentErp._id);
@@ -171,19 +201,35 @@ export default function ReadItem({ config, selectedItem }) {
           >
             {translate('Send by Email')}
           </Button>,
+          isQuote && !currentErp.converted && (
+            <Button
+              key="convert"
+              onClick={async () => {
+                const data = await request.convert({ entity, id: currentErp._id });
+                if (data?.success && data.result?._id) {
+                  navigate(`/invoice/read/${data.result._id}`);
+                }
+              }}
+              icon={<RetweetOutlined />}
+            >
+              {translate('Convert to Invoice')}
+            </Button>
+          ),
+          isInvoice && currentErp.paymentStatus !== 'paid' && (
+            <Button
+              key="pay"
+              type="primary"
+              icon={<CreditCardOutlined />}
+              onClick={() => {
+                dispatch(erp.currentItem({ data: currentErp }));
+                navigate(`/invoice/pay/${currentErp._id}`);
+              }}
+            >
+              {translate('Record Payment')}
+            </Button>
+          ),
           <Button
-            key={`${uniqueId()}`}
-            onClick={() => {
-              dispatch(erp.convert({ entity, id: currentErp._id }));
-            }}
-            icon={<RetweetOutlined />}
-            style={{ display: entity === 'quote' ? 'inline-block' : 'none' }}
-          >
-            {translate('Convert to Invoice')}
-          </Button>,
-
-          <Button
-            key={`${uniqueId()}`}
+            key="edit"
             onClick={() => {
               dispatch(
                 erp.currentAction({
@@ -193,7 +239,7 @@ export default function ReadItem({ config, selectedItem }) {
               );
               navigate(`/${entity.toLowerCase()}/update/${currentErp._id}`);
             }}
-            type="primary"
+            type={isInvoice && currentErp.paymentStatus !== 'paid' ? 'default' : 'primary'}
             icon={<EditOutlined />}
           >
             {translate('Edit')}
@@ -203,8 +249,30 @@ export default function ReadItem({ config, selectedItem }) {
           padding: '20px 0px',
         }}
       >
-        <Row>
-          <Statistic title="Status" value={currentErp.status} />
+        <Row gutter={[24, 16]} align="middle">
+          <Col>
+            <div style={{ minWidth: 180 }}>
+              <div style={{ fontSize: 12, color: '#64748b', marginBottom: 6 }}>
+                {translate('Status')}
+              </div>
+              <Select
+                value={currentErp.status}
+                style={{ width: 180 }}
+                onChange={handleStatusChange}
+                options={statusOptions.map((value) => ({
+                  value,
+                  label: translate(value),
+                }))}
+              />
+            </div>
+          </Col>
+          {isInvoice && (
+            <Statistic
+              title={translate('Payment')}
+              value={translate(currentErp.paymentStatus || 'unpaid')}
+              style={{ margin: '0 32px' }}
+            />
+          )}
           <Statistic
             title={translate('SubTotal')}
             value={moneyFormatter({
@@ -222,16 +290,18 @@ export default function ReadItem({ config, selectedItem }) {
               margin: '0 32px',
             }}
           />
-          <Statistic
-            title={translate('Paid')}
-            value={moneyFormatter({
-              amount: currentErp.credit,
-              currency_code: currentErp.currency,
-            })}
-            style={{
-              margin: '0 32px',
-            }}
-          />
+          {isInvoice && (
+            <Statistic
+              title={translate('Paid')}
+              value={moneyFormatter({
+                amount: currentErp.credit,
+                currency_code: currentErp.currency,
+              })}
+              style={{
+                margin: '0 32px',
+              }}
+            />
+          )}
         </Row>
       </PageHeader>
       <Divider dashed />
