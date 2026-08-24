@@ -1,5 +1,5 @@
 .ant-layout {
-  background: #ffffff !important;
+  background: #f4f7fa !important;
 }
 .site-layout .site-layout-background {
   background: #fff;
@@ -51,7 +51,18 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 700 !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em;
+}
+
+.ant-btn {
+  font-weight: 700;
+}
+
+.ant-input-affix-wrapper,
+.ant-input,
+.ant-select-selector {
+  border-radius: 10px !important;
 }
 
 .ant-menu-inline {

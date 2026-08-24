@@ -74,10 +74,18 @@ export default function Invoice() {
     {
       title: translate('Status'),
       dataIndex: 'status',
+      render: (status) => {
+        const meta = tagColor(status);
+        return <Tag color={meta.color || 'default'}>{translate(meta.label || status)}</Tag>;
+      },
     },
     {
       title: translate('Payment'),
       dataIndex: 'paymentStatus',
+      render: (status) => {
+        const meta = tagColor(status);
+        return <Tag color={meta.color || 'default'}>{translate(meta.label || status)}</Tag>;
+      },
     },
   ];
 

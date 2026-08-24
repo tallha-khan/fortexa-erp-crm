@@ -1,36 +1,29 @@
-import { Space, Layout, Divider, Typography } from 'antd';
-import logo from '@/style/images/idurar-crm-erp.svg';
-import useLanguage from '@/locale/useLanguage';
-import { useSelector } from 'react-redux';
+import BrandLockup from '@/components/BrandLockup';
 
-const { Content } = Layout;
-const { Title, Text } = Typography;
+const features = [
+  'Invoices, quotes, and payments in one workspace',
+  'Live dashboard for cash flow and customers',
+  'Clean records your team can trust',
+];
 
 export default function SideContent() {
-  const translate = useLanguage();
-
   return (
-    <Content
-      style={{
-        padding: '150px 30px 30px',
-        width: '100%',
-        maxWidth: '450px',
-        margin: '0 auto',
-      }}
-      className="sideContent"
-    >
-      <div style={{ width: '100%' }}>
-        
-
-        <Title level={1} style={{ fontSize: 28 }}>
-          Empowering Business Solutions
-        </Title>
-        <Text>
-          Accounting / Invoicing / Quote App <b /> based on Node.js React.js 
-        </Text>
-
-        <div className="space20"></div>
+    <div className="authBrandPanel">
+      <div>
+        <BrandLockup inverted />
+        <div className="authBrandKicker">Business operating system</div>
+        <h1 className="authBrandTitle">Run finance and customers from one polished workspace.</h1>
+        <p className="authBrandLead">
+          Fortexa is a modern ERP & CRM for invoicing, quotes, payments, and client management —
+          built to look as sharp as the work you deliver.
+        </p>
+        <ul className="authFeatureList">
+          {features.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
       </div>
-    </Content>
+      <div className="authBrandFoot">Fortexa · ERP CRM · Portfolio ready</div>
+    </div>
   );
 }

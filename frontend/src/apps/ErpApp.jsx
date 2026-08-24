@@ -66,10 +66,10 @@ export default function ErpCrmApp() {
             <HeaderContent />
             <Content
               style={{
-                margin: '40px auto 30px',
+                margin: '24px auto 32px',
                 overflow: 'initial',
                 width: '100%',
-                padding: '0 50px',
+                padding: '0 28px',
                 maxWidth: 1400,
               }}
             >

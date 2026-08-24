@@ -10,11 +10,11 @@
   list-style: none;
 }
 
-.list-checked-item-right{
+.list-checked-item-right {
   padding-right: 1.75rem;
 }
 
-.list-checked-item-left{
+.list-checked-item-left {
   padding-left: 1.75rem;
 }
 
@@ -28,14 +28,10 @@
   margin-top: 0.125rem;
 }
 
-.list-checked-item-right::before{
+.list-checked-item-right::before {
   right: 0;
 }
-.list-checked-item-left::before{
+
+.list-checked-item-left::before {
   left: 0;
-}
-
-
-.sideContent * {
-  color: #4f5d75 !important;
 }

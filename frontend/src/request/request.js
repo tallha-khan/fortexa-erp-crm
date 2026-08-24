@@ -81,6 +81,19 @@ const request = {
       return errorHandler(error);
     }
   },
+  updateStatus: async ({ entity, id, jsonData }) => {
+    try {
+      includeToken();
+      const response = await axios.patch(`${entity}/status/${id}`, jsonData);
+      successHandler(response, {
+        notifyOnSuccess: true,
+        notifyOnFailed: true,
+      });
+      return response.data;
+    } catch (error) {
+      return errorHandler(error);
+    }
+  },
   updateAndUpload: async ({ entity, id, jsonData }) => {
     try {
       includeToken();

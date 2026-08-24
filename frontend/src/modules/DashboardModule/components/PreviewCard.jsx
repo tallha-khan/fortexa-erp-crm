@@ -80,10 +80,8 @@ const PreviewState = ({ tag, value }) => {
       <Progress
         percent={value}
         showInfo={false}
-        strokeColor={{
-          '0%': '#333',
-          '100%': '#333',
-        }}
+        strokeColor={colours[tag] || '#0e7c72'}
+        trailColor="#eef2f7"
       />
     </div>
   );
@@ -130,7 +128,7 @@ export default function PreviewCard({
       <div className="pad20">
         <h3
           style={{
-            color: '#22075e',
+            color: '#0f172a',
             fontSize: 'large',
             marginBottom: 40,
             marginTop: 0,
